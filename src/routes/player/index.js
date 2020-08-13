@@ -1,7 +1,7 @@
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useChannel } from "../../hooks/use-channel";
 import { SocketProvider } from "../../components/socket-provider";
-import { useMemo } from "preact/hooks";
+import { useMemo, useState, useCallback } from "preact/hooks";
 
 const Player = ({ gameId, playerToken }) => {
   const socketParams = useMemo(() => {
@@ -17,14 +17,29 @@ const Player = ({ gameId, playerToken }) => {
   );
 };
 
-const onChannelMessage = (event, payload) => {
-  console.log("hi", event, payload);
-};
-
 const PlayerImpl = ({ gameId }) => {
+  const [gameState, setGameState] = useState(null);
+
+  const onChannelMessage = useCallback(
+    (event, payload) => {
+      setGameState({
+        event,
+        payload,
+      });
+    },
+    [setGameState]
+  );
+
   useChannel(`game:${gameId}`, onChannelMessage);
 
-  return <div>Player {gameId}</div>;
+  return (
+    <Fragment>
+      <div>Player {gameId}</div>
+      <div>
+        {gameState ? <pre>{JSON.stringify(gameState, null, 2)}</pre> : null}
+      </div>
+    </Fragment>
+  );
 };
 
 export default Player;

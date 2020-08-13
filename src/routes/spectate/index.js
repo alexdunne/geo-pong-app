@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useChannel } from "../../hooks/use-channel";
 import { SocketProvider } from "../../components/socket-provider";
 
@@ -11,9 +11,20 @@ const Spectate = (props) => {
 };
 
 const SpectateImpl = (props) => {
-  const channel = useChannel(`game:${props.gameId}`);
+  useChannel(`game:${props.gameId}`);
 
-  return <div>Spectate {props.gameId}</div>;
+  const joinPath = `/join/${props.gameId}`;
+
+  return (
+    <Fragment>
+      <div>Spectate {props.gameId}</div>
+      <div>
+        <a href={joinPath} target="_blank" rel="noreferrer">
+          {joinPath}
+        </a>
+      </div>
+    </Fragment>
+  );
 };
 
 export default Spectate;
