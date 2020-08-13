@@ -5,7 +5,7 @@ import { useState, useEffect, useContext } from "preact/hooks";
 const SocketContext = createContext(null);
 
 const SocketProvider = ({ wsUrl, params, children }) => {
-  const [socket] = useState(new Socket(wsUrl));
+  const [socket] = useState(new Socket(wsUrl, { params }));
 
   useEffect(() => {
     socket.connect();

@@ -3,7 +3,7 @@ import { route } from "preact-router";
 import { Link } from "preact-router/match";
 import { useState, useEffect } from "preact/hooks";
 import style from "./style";
-import { create as createGameInstance } from "../../api/game-instance-client";
+import { gameInstanceApi } from "../../api/game-instance-client";
 
 const NewGameStatus = {
   Idle: 1,
@@ -16,9 +16,10 @@ const Home = () => {
 
   useEffect(() => {
     if (newGameStatus === NewGameStatus.Creating) {
-      createGameInstance()
+      gameInstanceApi
+        .create()
         .then((instance) => {
-          route(`/spectate/${instance.id}`);
+          route(`/game/${instance.id}/spectate`);
         })
         .catch((e) => {
           console.log(e);

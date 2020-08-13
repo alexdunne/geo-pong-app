@@ -3,6 +3,8 @@ import { Router } from "preact-router";
 
 import Home from "../routes/home";
 import Spectate from "../routes/spectate";
+import Player from "../routes/player";
+import JoinGame from "../routes/join-game";
 
 export default class App extends Component {
   handleRoute = (e) => {
@@ -14,7 +16,9 @@ export default class App extends Component {
       <div id="app">
         <Router onChange={this.handleRoute}>
           <Home path="/" />
-          <Spectate path="/spectate/:gameId" />
+          <JoinGame path="/join" />
+          <Player path="game/:gameId/player/:playerToken" />
+          <Spectate path="game/:gameId/spectate" />
         </Router>
       </div>
     );

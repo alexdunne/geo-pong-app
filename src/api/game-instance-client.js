@@ -1,9 +1,20 @@
 import { client } from "./api-client";
 
-function create() {
+const create = () => {
   return client("instance", {
     method: "POST",
   });
-}
+};
 
-export { create };
+const join = (gameId) => {
+  return client(`instance/${gameId}/join`, {
+    method: "POST",
+  });
+};
+
+const gameInstanceApi = {
+  create,
+  join,
+};
+
+export { gameInstanceApi };
