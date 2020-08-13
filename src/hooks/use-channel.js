@@ -1,20 +1,18 @@
 const { useSocket } = require("../components/socket-provider");
 const { useEffect } = require("preact/hooks");
 
-const useChannel = (topic) => {
+const useChannel = (topic, callback) => {
   const socket = useSocket();
 
   useEffect(() => {
-    return connectToChannel(socket, topic);
-  }, [socket, topic]);
+    return connectToChannel(socket, topic, callback);
+  }, [socket, topic, callback]);
 };
 
-const connectToChannel = (socket, topic) => {
+const connectToChannel = (socket, topic, callback) => {
   const channel = socket.channel(topic);
 
-  channel.onMessage = (event, payload) => {
-    console.log({ event, payload });
-  };
+  channel.onMessage = callback;
 
   channel
     .join()

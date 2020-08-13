@@ -16,7 +16,7 @@ export default class App extends Component {
       <div id="app">
         <Router onChange={this.handleRoute}>
           <Home path="/" />
-          <JoinGame path="/join" />
+          <JoinGame path="/join/:gameId?" />
           <Player path="game/:gameId/player/:playerToken" />
           <Spectate path="game/:gameId/spectate" />
         </Router>

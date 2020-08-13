@@ -17,8 +17,12 @@ const Player = ({ gameId, playerToken }) => {
   );
 };
 
+const onChannelMessage = (event, payload) => {
+  console.log("hi", event, payload);
+};
+
 const PlayerImpl = ({ gameId }) => {
-  const channel = useChannel(`game:${gameId}`);
+  useChannel(`game:${gameId}`, onChannelMessage);
 
   return <div>Player {gameId}</div>;
 };
