@@ -14,7 +14,7 @@ export default class App extends Component {
       <div id="app">
         <Router onChange={this.handleRoute}>
           <Home path="/" />
-          <Spectate path="/spectate/:id" />
+          <Spectate path="/spectate/:gameId" />
         </Router>
       </div>
     );

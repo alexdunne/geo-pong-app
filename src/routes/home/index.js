@@ -8,8 +8,7 @@ import { create as createGameInstance } from "../../api/game-instance-client";
 const NewGameStatus = {
   Idle: 1,
   Creating: 2,
-  Created: 3,
-  Error: 4,
+  Error: 3,
 };
 
 const Home = () => {
