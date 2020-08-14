@@ -1,31 +1,32 @@
 const { useSocket } = require("../components/socket-provider");
-const { useEffect } = require("preact/hooks");
+const { useEffect, useRef } = require("preact/hooks");
 
 const useChannel = (topic, callback) => {
   const socket = useSocket();
+  const broadcast = useRef(null);
 
   useEffect(() => {
-    return connectToChannel(socket, topic, callback);
+    const channel = socket.channel(topic);
+
+    channel.onMessage = callback;
+
+    channel
+      .join()
+      .receive("ok", (resp) => {
+        console.log("Joined successfully", resp);
+      })
+      .receive("error", (resp) => {
+        console.log("Unable to join", resp);
+      });
+
+    broadcast.current = channel.push;
+
+    return () => {
+      channel.leave();
+    };
   }, [socket, topic, callback]);
-};
 
-const connectToChannel = (socket, topic, callback) => {
-  const channel = socket.channel(topic);
-
-  channel.onMessage = callback;
-
-  channel
-    .join()
-    .receive("ok", (resp) => {
-      console.log("Joined successfully", resp);
-    })
-    .receive("error", (resp) => {
-      console.log("Unable to join", resp);
-    });
-
-  return () => {
-    channel.leave();
-  };
+  return broadcast.current;
 };
 
 export { useChannel };

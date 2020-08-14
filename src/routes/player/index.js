@@ -4,11 +4,7 @@ import { SocketProvider } from "../../components/socket-provider";
 import { useMemo, useState, useCallback } from "preact/hooks";
 
 const Player = ({ gameId, playerToken }) => {
-  const socketParams = useMemo(() => {
-    return {
-      token: playerToken,
-    };
-  }, [playerToken]);
+  const socketParams = useMemo(() => ({ token: playerToken }), [playerToken]);
 
   return (
     <SocketProvider wsUrl={process.env.PREACT_APP_WS_URL} params={socketParams}>
@@ -31,6 +27,7 @@ const PlayerImpl = ({ gameId }) => {
   );
 
   useChannel(`game:${gameId}`, onChannelMessage);
+  useChannel(`game:${gameId}:player`, onChannelMessage);
 
   return (
     <Fragment>

@@ -12,8 +12,8 @@ const App = () => {
       <Router>
         <Home path="/" />
         <JoinGame path="/join/:gameId?" />
-        <Player path="game/:gameId/player/:playerToken" />
-        <Spectate path="game/:gameId/spectate" />
+        <Player path="/game/:gameId/player/:playerToken" />
+        <Spectate path="/game/:gameId/spectate" />
       </Router>
     </div>
   );

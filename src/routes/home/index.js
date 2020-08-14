@@ -14,19 +14,19 @@ const NewGameStatus = {
 const Home = () => {
   const [newGameStatus, setNewGameStatus] = useState(NewGameStatus.Idle);
 
-  useEffect(() => {
-    if (newGameStatus === NewGameStatus.Creating) {
-      gameInstanceApi
-        .create()
-        .then((instance) => {
-          route(`/game/${instance.id}/spectate`);
-        })
-        .catch((e) => {
-          console.log(e);
-          setNewGameStatus(NewGameStatus.Error);
-        });
-    }
-  }, [newGameStatus]);
+  const createNewGame = () => {
+    setNewGameStatus(NewGameStatus.Creating);
+
+    gameInstanceApi
+      .create()
+      .then((instance) => {
+        route(`/game/${instance.id}/spectate`);
+      })
+      .catch((e) => {
+        console.log(e);
+        setNewGameStatus(NewGameStatus.Error);
+      });
+  };
 
   return (
     <div class={style.home}>
@@ -41,13 +41,7 @@ const Home = () => {
       ) : (
         <ul>
           <li>
-            <button
-              onClick={() => {
-                setNewGameStatus(NewGameStatus.Creating);
-              }}
-            >
-              Create new game
-            </button>
+            <button onClick={createNewGame}>Create new game</button>
           </li>
           <li>
             <Link href="/join">Join a game</Link>
