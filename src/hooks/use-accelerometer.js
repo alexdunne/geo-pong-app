@@ -6,8 +6,6 @@ const useAccelerometer = (frequency = 60) => {
   useEffect(() => {
     const acl = new window.Accelerometer({ frequency });
 
-    console.log(acl);
-
     const eventListener = () => {
       setPosition({ x: acl.x, y: acl.y, z: acl.z });
     };

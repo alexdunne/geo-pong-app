@@ -3,6 +3,7 @@ import { useChannel } from "../../hooks/use-channel";
 import { SocketProvider } from "../../components/socket-provider";
 import { useMemo, useState, useCallback, useEffect } from "preact/hooks";
 import { useAccelerometer } from "../../hooks/use-accelerometer";
+import GameStats from "../../components/game-stats";
 
 const Player = ({ gameId, playerToken }) => {
   const socketParams = useMemo(() => ({ token: playerToken }), [playerToken]);
@@ -33,17 +34,25 @@ const PlayerImpl = ({ gameId }) => {
   const position = useAccelerometer();
 
   useEffect(() => {
-    console.log({ position });
     // broadcast("move", position);
   }, [broadcast, position]);
 
   return (
     <Fragment>
       <div>Player {gameId}</div>
-      <div>
-        {gameState ? <pre>{JSON.stringify(gameState, null, 2)}</pre> : null}
-      </div>
+      <GameStats gameState={gameState} />
+
+      <Controller />
     </Fragment>
+  );
+};
+
+const Controller = () => {
+  return (
+    <div>
+      <div>Left</div>
+      <div>Right</div>
+    </div>
   );
 };
 
