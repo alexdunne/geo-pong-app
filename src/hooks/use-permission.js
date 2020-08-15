@@ -21,9 +21,9 @@ const convertResultToStatus = (result) => {
 };
 
 const fetchCurrentStatus = async (permission) => {
-  return navigator.permissions
-    .query({ name: permission })
-    .then(convertResultToStatus);
+  return navigator.permissions.query({ name: permission }).then((result) => {
+    return convertResultToStatus(result);
+  });
 };
 
 const usePermission = (permission) => {

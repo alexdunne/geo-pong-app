@@ -1,7 +1,8 @@
 import { h, Fragment } from "preact";
 import { useChannel } from "../../hooks/use-channel";
 import { SocketProvider } from "../../components/socket-provider";
-import { useMemo, useState, useCallback } from "preact/hooks";
+import { useMemo, useState, useCallback, useEffect } from "preact/hooks";
+import { useAccelerometer } from "../../hooks/use-accelerometer";
 
 const Player = ({ gameId, playerToken }) => {
   const socketParams = useMemo(() => ({ token: playerToken }), [playerToken]);
@@ -27,7 +28,14 @@ const PlayerImpl = ({ gameId }) => {
   );
 
   useChannel(`game:${gameId}`, onChannelMessage);
-  useChannel(`game:${gameId}:player`, onChannelMessage);
+  const broadcast = useChannel(`game:${gameId}:player`, onChannelMessage);
+
+  const position = useAccelerometer();
+
+  useEffect(() => {
+    console.log({ position });
+    // broadcast("move", position);
+  }, [broadcast, position]);
 
   return (
     <Fragment>

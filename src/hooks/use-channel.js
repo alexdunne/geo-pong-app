@@ -8,7 +8,11 @@ const useChannel = (topic, callback) => {
   useEffect(() => {
     const channel = socket.channel(topic);
 
-    channel.onMessage = callback;
+    channel.onMessage = (event, payload) => {
+      callback(event, payload);
+
+      return payload;
+    };
 
     channel
       .join()
