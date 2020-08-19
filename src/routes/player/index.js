@@ -1,9 +1,12 @@
 import { h, Fragment } from "preact";
+import { useMemo, useState, useCallback, useEffect } from "preact/hooks";
+import { usePress } from "@react-aria/interactions";
+
 import { useChannel } from "../../hooks/use-channel";
 import { SocketProvider } from "../../components/socket-provider";
-import { useMemo, useState, useCallback, useEffect } from "preact/hooks";
-import { useAccelerometer } from "../../hooks/use-accelerometer";
 import GameStats from "../../components/game-stats";
+import ChevronLeft from "../../components/icons/chevron-left";
+import ChevronRight from "../../components/icons/chevron-right";
 
 const Player = ({ gameId, playerToken }) => {
   const socketParams = useMemo(() => ({ token: playerToken }), [playerToken]);
@@ -20,10 +23,7 @@ const PlayerImpl = ({ gameId }) => {
 
   const onChannelMessage = useCallback(
     (event, payload) => {
-      setGameState({
-        event,
-        payload,
-      });
+      setGameState({ event, payload });
     },
     [setGameState]
   );
@@ -31,27 +31,70 @@ const PlayerImpl = ({ gameId }) => {
   useChannel(`game:${gameId}`, onChannelMessage);
   const broadcast = useChannel(`game:${gameId}:player`, onChannelMessage);
 
-  const position = useAccelerometer();
+  const { pressProps: leftPressProps, isPressed: isLeftPressed } = usePress({
+    onPressStart: () => {
+      broadcast("new_player_action", { action: "left_button_pressed" });
+    },
+    onPressEnd: () => {
+      broadcast("new_player_action", { action: "left_button_released" });
+    },
+  });
 
-  useEffect(() => {
-    // broadcast("move", position);
-  }, [broadcast, position]);
+  const { pressProps: rightPressProps, isPressed: isRightPressed } = usePress({
+    onPressStart: () => {
+      broadcast("new_player_action", { action: "right_button_pressed" });
+    },
+    onPressEnd: () => {
+      broadcast("new_player_action", { action: "right_button_released" });
+    },
+  });
 
   return (
     <Fragment>
-      <div>Player {gameId}</div>
       <GameStats gameState={gameState} />
-
-      <Controller />
+      <Controller>
+        <ControllerButton isPressed={isLeftPressed} {...leftPressProps}>
+          <ChevronLeft size="200" />
+        </ControllerButton>
+        <ControllerButton isPressed={isRightPressed} {...rightPressProps}>
+          <ChevronRight size="200" />
+        </ControllerButton>
+      </Controller>
     </Fragment>
   );
 };
 
-const Controller = () => {
+const Controller = (props) => {
   return (
-    <div>
-      <div>Left</div>
-      <div>Right</div>
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "auto auto",
+        gap: "20px",
+        height: "100%",
+      }}
+    >
+      {props.children}
+    </div>
+  );
+};
+
+const pressedStyles = {
+  background: "red",
+};
+
+const ControllerButton = ({ isPressed, children, ...props }) => {
+  return (
+    <div
+      {...props}
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        ...(isPressed ? pressedStyles : {}),
+      }}
+    >
+      {children}
     </div>
   );
 };

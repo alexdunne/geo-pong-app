@@ -23,7 +23,7 @@ const useChannel = (topic, callback) => {
         console.log("Unable to join", resp);
       });
 
-    broadcast.current = channel.push;
+    broadcast.current = channel.push.bind(channel);
 
     return () => {
       channel.leave();

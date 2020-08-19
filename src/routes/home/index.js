@@ -1,7 +1,7 @@
 import { h } from "preact";
 import { route } from "preact-router";
 import { Link } from "preact-router/match";
-import { useState, useEffect } from "preact/hooks";
+import { useState } from "preact/hooks";
 import style from "./style";
 import { gameInstanceApi } from "../../api/game-instance-client";
 
