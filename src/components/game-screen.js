@@ -1,20 +1,20 @@
 import { h } from "preact";
 import { useRef, useEffect } from "preact/hooks";
 
-const renderPlayer = (ctx, player, meta) => {
+const renderPlayer = (ctx, player, engine) => {
   ctx.fillRect(
     player.position.x,
     player.position.y,
-    meta.playerSize.width,
-    meta.playerSize.height
+    engine.playerSize.width,
+    engine.playerSize.height
   );
 };
 
 const GameScreen = ({ gameState }) => {
   const canvasRef = useRef(null);
 
-  const height = gameState.meta.gameHeight;
-  const width = gameState.meta.gameWidth;
+  const height = gameState.engine.gameHeight;
+  const width = gameState.engine.gameWidth;
 
   useEffect(() => {
     if (!canvasRef.current) {
@@ -25,7 +25,7 @@ const GameScreen = ({ gameState }) => {
     ctx.clearRect(0, 0, width, height);
 
     gameState.players.forEach((player) => {
-      renderPlayer(ctx, player, gameState.meta);
+      renderPlayer(ctx, player, gameState.engine);
     });
   }, [gameState, width, height]);
 
