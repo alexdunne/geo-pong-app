@@ -51,7 +51,6 @@ const PlayerImpl = ({ gameId }) => {
 
   return (
     <Fragment>
-      <GameStats gameState={gameState} />
       <Controller>
         <ControllerButton isPressed={isLeftPressed} {...leftPressProps}>
           <ChevronLeft size="200" />

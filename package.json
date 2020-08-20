@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@react-aria/button": "^3.2.0",
+    "date-fns": "^2.15.0",
     "phoenix": "^1.5.4",
     "preact": "^10.3.2",
     "preact-render-to-string": "^5.1.4",
