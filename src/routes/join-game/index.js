@@ -2,7 +2,6 @@ import { h, Fragment } from "preact";
 import { useState, useEffect, useCallback } from "preact/hooks";
 import { route } from "preact-router";
 import { gameInstanceApi } from "../../api/game-instance-client";
-import { PermissionGuard } from "../../components/permission-guard";
 
 const JoinStatus = {
   Idle: 1,
@@ -11,17 +10,6 @@ const JoinStatus = {
 };
 
 const JoinGame = ({ gameId }) => {
-  return (
-    <PermissionGuard
-      permission="accelerometer"
-      reason="To play you need to provide access to your devices accelerometer"
-    >
-      <JoinGameImpl gameId={gameId} />
-    </PermissionGuard>
-  );
-};
-
-const JoinGameImpl = ({ gameId }) => {
   const [joinStatus, setJoinStatus] = useState(JoinStatus.Idle);
   const [code, setCode] = useState(gameId ?? "");
 
@@ -32,7 +20,7 @@ const JoinGameImpl = ({ gameId }) => {
 
         const { token } = await gameInstanceApi.join(code);
 
-        route(`/game/${code}/player/${token}`);
+        route(`/game/${code}/player/${encodeURIComponent(token)}`);
       } catch (e) {
         setJoinStatus(JoinStatus.Error);
       }
