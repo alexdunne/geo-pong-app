@@ -10,6 +10,19 @@ const renderPlayer = (ctx, player, engine) => {
   );
 };
 
+const renderBall = (ctx, ball, engine) => {
+  ctx.save();
+  ctx.beginPath();
+
+  ctx.translate(ball.x - engine.ballSize, ball.y - engine.ballSize);
+  ctx.scale(engine.ballSize, engine.ballSize);
+  ctx.arc(1, 1, 1, 0, 2 * Math.PI, false);
+
+  ctx.fillStyle = "#31abde";
+  ctx.fill();
+  ctx.restore();
+};
+
 const GameScreen = ({ gameState }) => {
   const canvasRef = useRef(null);
 
@@ -27,6 +40,8 @@ const GameScreen = ({ gameState }) => {
     gameState.players.forEach((player) => {
       renderPlayer(ctx, player, gameState.engine);
     });
+
+    renderBall(ctx, gameState.ball, gameState.engine);
   }, [gameState, width, height]);
 
   return (
