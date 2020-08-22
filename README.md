@@ -1,8 +1,10 @@
 # geo-pong-app
 
+Checkout [https://github.com/alexdunne/geo_pong](https://github.com/alexdunne/geo_pong) for more information.
+
 ## CLI Commands
 
-``` bash
+```bash
 # install dependencies
 npm install
 
