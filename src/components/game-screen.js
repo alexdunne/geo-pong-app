@@ -1,4 +1,4 @@
-import { h } from "preact";
+import { h, Fragment } from "preact";
 import { useRef, useEffect } from "preact/hooks";
 
 const renderPlayer = (ctx, player, engine) => {
@@ -23,6 +23,18 @@ const renderBall = (ctx, ball, engine) => {
   ctx.restore();
 };
 
+const renderScore = (ctx, score, engine) => {
+  const [playerOne, playerTwo] = score;
+
+  ctx.save();
+
+  ctx.font = "48px Arial";
+  ctx.textAlign = "center";
+  ctx.fillText(`${playerOne} - ${playerTwo}`, engine.gameWidth / 2, 50);
+
+  ctx.restore();
+};
+
 const GameScreen = ({ gameState }) => {
   const canvasRef = useRef(null);
 
@@ -42,12 +54,16 @@ const GameScreen = ({ gameState }) => {
     });
 
     renderBall(ctx, gameState.ball, gameState.engine);
+
+    renderScore(ctx, gameState.score, gameState.engine);
   }, [gameState, width, height]);
 
   return (
-    <div style={{ width, height, overflow: "none", border: "1px solid red" }}>
-      <canvas ref={canvasRef} width={width} height={height} />
-    </div>
+    <Fragment>
+      <div style={{ width, height, overflow: "none", border: "1px solid red" }}>
+        <canvas ref={canvasRef} width={width} height={height} />
+      </div>
+    </Fragment>
   );
 };
 
