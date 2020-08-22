@@ -5,6 +5,7 @@ import { useState, useCallback } from "preact/hooks";
 import differenceInSeconds from "date-fns/differenceInSeconds";
 import parseISO from "date-fns/parseISO";
 import GameScreen from "../../components/game-screen";
+import QRCode from "react-qr-code";
 
 const Spectate = (props) => {
   return (
@@ -67,6 +68,7 @@ const Loading = (props) => {
           {joinPath}
         </a>
       </div>
+      <QRCode value={`${window.location.host}${joinPath}`} />
     </Fragment>
   );
 };
